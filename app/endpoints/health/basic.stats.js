@@ -13,31 +13,31 @@ var http	 = require('http');
 
 
 module.exports = function(req, res) {
-	var outBoundEsTime = Date.now();
+	var outBoundDbTime = Date.now();
 
-	var esReq = http.get(serviceConfigs.es, function(esRes) {
-		esRes.on('data', function(data) {
+	var dbReq = http.get(serviceConfigs.db, function(dbRes) {
+		dbRes.on('data', function(data) {
 			res.json({
 				qps: qpsTally.getCount(),
-				es: {
+				db: {
 					reachable: true,
-					latency: (Date.now() - outBoundEsTime) + ' ms'
+					latency: (Date.now() - outBoundDbTime) + ' ms'
 				}
 			});
 		});
-		esRes.on('error', handleEsError);
+		dbRes.on('error', handleDbError);
 	});
 
-	esReq.on('error', handleEsError);
+	dbReq.on('error', handleDbError);
 
-	function handleEsError(err) {
+	function handleDbError(err) {
 		res.statusCode = 500;
 		res.json({
 			qps: qpsTally.getCount(),
-			es: {
+			db: {
 				reachable: false,
 				latency: 'N/A',
-				endpoint: serviceConfigs.es + ''
+				endpoint: serviceConfigs.db + ''
 			}
 		});
 	}
