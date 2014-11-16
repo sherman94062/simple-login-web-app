@@ -16,11 +16,7 @@ module.exports = function(req, res) {
 	var outBoundEsTime = Date.now();
 
 	var esReq = http.get(serviceConfigs.es, function(esRes) {
-		var chunks = '';
 		esRes.on('data', function(data) {
-			chunks += data.toString();
-		});
-		esRes.on('end', function() {
 			res.json({
 				qps: qpsTally.getCount(),
 				es: {
