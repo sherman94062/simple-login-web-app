@@ -11,6 +11,7 @@
 module.exports = {
 	context: __dirname,
 	children: [
-		'faceted'
+		'faceted',
+		'similarity'
 	]
 };
