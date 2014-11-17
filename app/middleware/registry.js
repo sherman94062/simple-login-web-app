@@ -2,7 +2,9 @@
 
 
 /*
-	Central registry of the middleware for the app
+	Central registry of the middleware for the app.
+	Middleware are functions that every request runs
+	  through before final processing
 
 	(1) Defines middlewares
 	(2) Attaches them all to the application

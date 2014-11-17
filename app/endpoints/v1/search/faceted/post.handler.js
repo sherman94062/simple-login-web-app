@@ -13,7 +13,7 @@
 var Database  = helper('db');
 var mapFacets = require('./facet.mapper');
 
-var SCHEMA_SHIM = require('./temp.shim');
+
 
 
 module.exports = {
@@ -34,9 +34,7 @@ module.exports = {
 			Database.post(url, computedQuery, function(err) {
 				res.statusCode = ~err.indexOf('No handler') ? 404 : 500;
 				res.end();
-			}, function(results) {
-				res.json(SCHEMA_SHIM(results));
-			});
+			}, res.json);
 		}
 	}
 }

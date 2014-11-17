@@ -19,6 +19,8 @@
 var url		= require('url');
 var http	= require('http');
 
+var SCHEMA_SHIM = require('./temp.shim');
+
 var dbHostname;
 var dbPort;
 
@@ -54,7 +56,8 @@ function makeRequest(method, path, body, errFn, fn) {
 		var data = '';
 
 		res.on('end', function() {
-			fn(JSON.parse(data));
+			// REMOVAL OF SHIM POST-SCHEMA CHANGE
+			fn(SCHEMA_SHIM(JSON.parse(data)));
 		});
 
 		res.on('data', function(chunk) {
