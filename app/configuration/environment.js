@@ -15,6 +15,6 @@ module.exports = Object.keys(process.env)
 		return key.match(keySignature);
 	})
 	.reduce(function(hash, key) {
-		hash[key.match(keySignature)[1]] = process.env[key];
+		hash[key.match(keySignature)[1].toLowerCase()] = process.env[key];
 		return hash;
 	}, {});

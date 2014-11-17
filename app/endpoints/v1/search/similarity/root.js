@@ -27,7 +27,7 @@ module.exports = [
 				res.json({
 					message: '404 Not Found: Document not found, cannot calculate proximities.'
 				});
-			}, res.json);
+			}, res.json.bind(res));
 		}
 	}
 ];

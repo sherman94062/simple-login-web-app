@@ -34,7 +34,7 @@ module.exports = {
 			Database.post(url, computedQuery, function(err) {
 				res.statusCode = ~err.indexOf('No handler') ? 404 : 500;
 				res.end();
-			}, res.json);
+			}, res.json.bind(res));
 		}
 	}
 }
