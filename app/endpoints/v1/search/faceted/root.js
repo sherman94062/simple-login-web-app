@@ -1,8 +1,8 @@
 
 
 
-var Database = helper('db');
-
+var Database  = helper('db');
+var mapFacets = require('./facet.mapper');
 
 module.exports = [
 	{

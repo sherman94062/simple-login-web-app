@@ -13,7 +13,7 @@ var dbHostname;
 var dbPort;
 
 try {
-	dbHostname	= url.parse(serviceConfigs.db).hostName;
+	dbHostname	= url.parse(serviceConfigs.db).hostname;
 	dbPort		= url.parse(serviceConfigs.db).port;
 } catch (err) {
 	throw "Invalid host for --db <value>";
