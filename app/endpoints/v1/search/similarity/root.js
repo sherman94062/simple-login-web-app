@@ -17,10 +17,10 @@ module.exports = [
 		path: '/:index/:mapping/:document',
 		handler: function(req, res) {
 			Database.get('/' + [
-				req.param.index,
-				req.param.mapping,
-				req.param.document,
-				'_mlt'
+				req.params.index,
+				req.params.mapping,
+				req.params.document,
+				'_mlt?min_term_freq=1&min_doc_freq=1'
 			].join('/'),
 			function(err) {
 				res.statusCode = 404;
