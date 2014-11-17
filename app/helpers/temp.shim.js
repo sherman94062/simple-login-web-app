@@ -7,7 +7,7 @@
 
 
 module.exports = function(response) {
-	if (response.hits.hits) {
+	if (response.hits && response.hits.hits) {
 		response.hits.hits.forEach(function(hit) {
 			delete hit._source.compare;
 			hit._source.enriched = hit._source.display;
