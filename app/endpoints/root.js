@@ -2,7 +2,7 @@
 
 
 /*
-	Root route for all of the service.
+	Root route table for all of the endpoints.
 */
 
 

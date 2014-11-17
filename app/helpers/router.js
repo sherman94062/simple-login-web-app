@@ -56,12 +56,8 @@ var exportable = {
 			};
 
 			// (2b) Normalizing to pluralized versions in Arrays
-			if (route.verb) {
-				routeConfig.verbs = [route.verb];
-			}
-			if (route.path) {
-				routeConfig.paths = [route.path];
-			}
+			routeConfig.verbs = route.verbs || [route.verb];
+			routeConfig.paths = route.paths || [route.path];
 
 			// (2c) Apply routing for each entry in pluralized
 			routeConfig.paths.forEach(function(path) {
