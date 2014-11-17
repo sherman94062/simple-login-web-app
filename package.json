@@ -1,11 +1,14 @@
 {
+	"author": "Andrew Templeton",
 	"name": "search-api",
+	"version": "0.0.1",
 	"main": "server.js",
 	"dependencies": {
 		"express": "4.10.2",
 		"body-parser": "1.2.2"
 	},
-	"scripts": {
-		"start": "node server.js"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/andrew-templeton/search-api"
 	}
 }

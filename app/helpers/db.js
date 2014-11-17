@@ -2,12 +2,22 @@
 
 
 /*
-	Speed up DB queries with this
+	Speed up authorship of DB queries with this helper template.
+
+
+	Since DB queries and replies will always be JSON,
+	  there is no way to handle as streams,
+	  as we need the entire payload to parse.
+
+	Thus, we handle debuffering into strings,
+	  and parsing of the JSON, as well as providing
+	  structure to callbacks and forcing error handling
+	  functions.
 */
+
 
 var url		= require('url');
 var http	= require('http');
-
 
 var dbHostname;
 var dbPort;
@@ -18,7 +28,6 @@ try {
 } catch (err) {
 	throw "Invalid host for --db <value>";
 }
-
 
 
 module.exports = {
@@ -58,4 +67,3 @@ function makeRequest(method, path, body, errFn, fn) {
 	}
 
 }
-

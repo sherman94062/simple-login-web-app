@@ -1,3 +1,5 @@
+# Build/deploy automation manifest file for http://wercker.com service.
+
 box: wercker/nodejs@1.0.2
 build:
   steps:

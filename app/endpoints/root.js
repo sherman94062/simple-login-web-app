@@ -3,6 +3,11 @@
 
 /*
 	Root route table for all of the endpoints.
+	
+	Subspaces will likely only consist of API 
+		versions and a health check.
+
+	Obligatory "Hello World!", heh.
 */
 
 
