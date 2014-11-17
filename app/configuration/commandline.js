@@ -19,7 +19,7 @@ module.exports = process.argv.reduce(function(hash, arg, idx, array) {
 		// Lookahead for non-key
 		//   ? Remove leading dashes
 		//   : Non-value keys are boolean
-		hash[arg.substr(2)] = next && next.indexOf('--') ? next : true;
+		hash[arg.substr(2).toLowerCase()] = next && next.indexOf('--') ? next : true;
 	}
 
 	return hash;
