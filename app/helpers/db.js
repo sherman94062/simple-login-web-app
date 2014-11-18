@@ -19,7 +19,6 @@
 var url		= require('url');
 var http	= require('http');
 
-var SCHEMA_SHIM = require('./temp.shim');
 
 var dbHostname;
 var dbPort;
