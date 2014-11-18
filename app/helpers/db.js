@@ -55,7 +55,7 @@ function makeRequest(method, path, body, errFn, fn) {
 		var data = '';
 
 		if (typeof fn !== 'function' && typeof (errFn || fn).pipe === 'function') {
-			res.pipe(fn);
+			res.pipe(errFn || fn);
 		} else {
 			res.on('end', function() {
 				fn(JSON.parse(data));
