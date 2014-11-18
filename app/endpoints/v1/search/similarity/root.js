@@ -22,12 +22,7 @@ module.exports = [
 				req.params.document,
 				'_mlt?min_term_freq=1&min_doc_freq=1&include=true'
 			].join('/'),
-			function(err) {
-				res.statusCode = 404;
-				res.json({
-					message: '404 Not Found: Document not found, cannot calculate proximities.'
-				});
-			}, res.json.bind(res));
+			res);
 		}
 	}
 ];

@@ -54,18 +54,24 @@ function makeRequest(method, path, body, errFn, fn) {
 	function callback(res) {
 		var data = '';
 
-		res.on('end', function() {
-			// REMOVAL OF SHIM POST-SCHEMA CHANGE
-			fn(SCHEMA_SHIM(JSON.parse(data)));
-		});
+		if (typeof fn !== 'function' && typeof (errFn || fn).pipe === 'function') {
+			res.pipe(fn);
+		} else {
+			res.on('end', function() {
+				fn(JSON.parse(data));
+			});
 
-		res.on('data', function(chunk) {
-			data += chunk;
-		});
+			res.on('data', function(chunk) {
+				data += chunk;
+			});
 
-		res.on('error', function(err) {
-			errFn(err.toString());
-		});
+			res.on('error', function(err) {
+				errFn(err.toString());
+			});
+		}
+
+		
 	}
+
 
 }
