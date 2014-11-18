@@ -20,7 +20,7 @@ module.exports = [
 				req.params.index,
 				req.params.mapping,
 				req.params.document,
-				'_mlt?min_term_freq=1&min_doc_freq=1'
+				'_mlt?min_term_freq=1&min_doc_freq=1&include=true'
 			].join('/'),
 			function(err) {
 				res.statusCode = 404;
