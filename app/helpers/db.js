@@ -56,8 +56,12 @@ function makeRequest(method, path, body, errFn, fn) {
 
 		// May just be piping output.
 		if (typeof fn !== 'function' && typeof fn.write === 'function') {
-			res.on('data', fn.write);
-			res.on('end', fn.end);
+			res.on('data', function(packets) {
+				fn.write(packets);
+			});
+			res.on('end', function() {
+				fn.end();
+			});
 		} else {
 			res.on('end', function() {
 				fn(JSON.parse(data));
