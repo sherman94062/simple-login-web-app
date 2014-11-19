@@ -57,7 +57,7 @@ function makeRequest(method, path, body, errHandler, handler) {
 		// May just be piping output.
 		if (typeof handler !== 'function' && typeof handler.write === 'function') {
 			handler.writeHead(200, {
-  				'Content-Length': res.getHeader('Content-Length'),
+  				'Content-Length': res.headers['content-length'],
   				'Content-Type': 'application/json'
   			});
 			res.on('data', function(packets) {
