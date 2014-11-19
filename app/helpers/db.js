@@ -54,8 +54,10 @@ function makeRequest(method, path, body, errFn, fn) {
 	function callback(res) {
 		var data = '';
 
-		if (typeof fn !== 'function' && typeof (errFn || fn).pipe === 'function') {
-			res.pipe(errFn || fn);
+		// May just be piping output.
+		if (typeof fn !== 'function' && typeof fn.write === 'function') {
+			res.on('data', fn.write);
+			res.on('end', fn.end);
 		} else {
 			res.on('end', function() {
 				fn(JSON.parse(data));
@@ -64,11 +66,11 @@ function makeRequest(method, path, body, errFn, fn) {
 			res.on('data', function(chunk) {
 				data += chunk;
 			});
-
-			res.on('error', function(err) {
-				errFn(err.toString());
-			});
 		}
+
+		res.on('error', function(err) {
+			errFn(err.toString());
+		});
 
 		
 	}
