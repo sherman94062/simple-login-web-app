@@ -40,14 +40,14 @@ module.exports = {
 	}
 };
 
-function makeRequest(method, path, body, errFn, fn) {
+function makeRequest(method, path, body, errHandler, handler) {
 	http.request({
 		method: method,
 		path: path,
 		port: dbPort,
 		host: dbHostname
 	}, callback)
-	.on('error', errFn)
+	.on('error', errHandler)
 	.end(body);
 
 
@@ -55,16 +55,20 @@ function makeRequest(method, path, body, errFn, fn) {
 		var data = '';
 
 		// May just be piping output.
-		if (typeof fn !== 'function' && typeof fn.write === 'function') {
+		if (typeof handler !== 'function' && typeof handler.write === 'function') {
+			handler.writeHead(200, {
+  				'Content-Length': res.getHeader('Content-Length'),
+  				'Content-Type': 'application/json'
+  			});
 			res.on('data', function(packets) {
-				fn.write(packets);
+				handler.write(packets);
 			});
 			res.on('end', function() {
-				fn.end();
+				handler.end();
 			});
 		} else {
 			res.on('end', function() {
-				fn(JSON.parse(data));
+				handler(JSON.parse(data));
 			});
 
 			res.on('data', function(chunk) {
@@ -73,7 +77,7 @@ function makeRequest(method, path, body, errFn, fn) {
 		}
 
 		res.on('error', function(err) {
-			errFn(err.toString());
+			errHandler(err.toString());
 		});
 
 		
