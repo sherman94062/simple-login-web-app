@@ -99,6 +99,8 @@ var exportable = {
 	}
 };
 
+// Curried to allow EXISTS X SUCH THAT X(elem) shorthand
+//   with Array.prototype.some
 function accepts(value) {
 	return function(validator) {
 		switch (typeof validator) {
@@ -114,22 +116,31 @@ function accepts(value) {
 }
 
 function prepQueryString(validatorSet, queryParams) {
+
+	// Iteration through all possibe keys in accepted set
 	return Object.keys(validatorSet).reduce(function(queryString, key) {
 
-		if (queryParams[key] && Array.isArray(validatorSet[key])
+		// Ensure key exists in request
+		if (queryParams[key] &&
+			// Since we accept both arrays and singles
+			Array.isArray(validatorSet[key])
+			// "Exists X in validatorSet[key] such that X(queryParams[key])"
 			? validatorSet[key].some(accepts(queryParams[key]))
+			// The singular passes
 			: accepts(queryParams[key])(validatorSet[key])) {
 
+				// Append `key=value` to reduction sequence
 				queryString += [
 					key,
 					queryParams[key]
-				].join('=');
+				].join('=') + '&';
 
 		}
-
+		// Return extended parameter sequence
 		return queryString;
 
 	}, '');
 }
 
+// Public exposure
 module.exports = exportable;
