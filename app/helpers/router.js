@@ -2,6 +2,14 @@
 
 
 /*
+	TO DO: Extend notion of metaprogrammed `queryParams` validators.
+	  Need to pre-author composite validation functions,
+	    rather than running the logic and doing loop discovery every time.
+*/
+
+
+/*
+
 	Helper constructs router heirachies from a manifest.
 
 	(1) Creates an Express.js router
@@ -107,7 +115,7 @@ function accepts(value) {
 		switch (typeof validator) {
 			case 'function':
 				return validator(value);
-			// RegExp
+			// Should be RegExp
 			case 'object':
 				return validator.test && validator.test(value);
 			case 'string':
@@ -136,6 +144,9 @@ function prepQueryString(validatorSet, queryParams) {
 					queryParams[key]
 				].join('=') + '&';
 
+		} else {
+			// Do not allow pass through of invalid parameters
+			delete queryParams[key];
 		}
 		// Return extended parameter sequence
 		return queryString;
