@@ -62,7 +62,8 @@ var exportable = {
 
 		(subspace.routes || []).forEach(function(route) {
 			var routeConfig = {
-				handler: route.handler
+				handler: route.handler,
+				acceptParams: route.acceptParams
 			};
 
 			// (2b) Normalizing to pluralized versions in Arrays
@@ -108,7 +109,7 @@ function accepts(value) {
 				return validator(value);
 			// RegExp
 			case 'object':
-				return validator.text && validator.test(value);
+				return validator.test && validator.test(value);
 			case 'string':
 				return value === validator;
 		}
@@ -139,7 +140,7 @@ function prepQueryString(validatorSet, queryParams) {
 		// Return extended parameter sequence
 		return queryString;
 
-	}, '');
+	}, '').replace(/&$/, '');
 }
 
 // Public exposure

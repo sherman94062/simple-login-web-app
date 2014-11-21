@@ -16,16 +16,11 @@ module.exports = [
 		verb: 'GET',
 		path: '/:index/:mapping/:document',
 		acceptParams: {
-			size: /^\d+$/,
+			search_size: /^\d+$/,
+			search_from: /^\d+$/,
 			include: ['true', 'false']
 		},
 		handler: function(req, res) {
-			console.log('GET?MLT: /' + [
-				req.params.index,
-				req.params.mapping,
-				req.params.document,
-				'_mlt?min_term_freq=1&min_doc_freq=1&' + req.preppedQuery
-			].join('/'));
 			Database.get('/' + [
 				req.params.index,
 				req.params.mapping,
