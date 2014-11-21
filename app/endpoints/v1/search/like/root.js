@@ -18,6 +18,7 @@ module.exports = [
 		acceptParams: {
 			search_size: /^\d+$/,
 			search_from: /^\d+$/,
+			search_indices: /^\w+(,\w+)*$/,
 			include: ['true', 'false']
 		},
 		handler: function(req, res) {
