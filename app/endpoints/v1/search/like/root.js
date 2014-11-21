@@ -24,13 +24,13 @@ module.exports = [
 				req.params.index,
 				req.params.mapping,
 				req.params.document,
-				'_mlt?min_term_freq=1&min_doc_freq=1&include=true&' + req.preppedQuery
+				'_mlt?min_term_freq=1&min_doc_freq=1&' + req.preppedQuery
 			].join('/'));
 			Database.get('/' + [
 				req.params.index,
 				req.params.mapping,
 				req.params.document,
-				'_mlt?min_term_freq=1&min_doc_freq=1&include=true&' + req.preppedQuery
+				'_mlt?min_term_freq=1&min_doc_freq=1&' + req.preppedQuery
 			].join('/'),
 			function(err) {
 				res.statusCode = 404;
