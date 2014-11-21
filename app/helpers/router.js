@@ -27,6 +27,16 @@
 				path: string or RegExp for relative route
 				// OR
 				paths: Array of string or RegExp for relative route
+
+				acceptParams: Object containing allowed query params and validation code
+				  for composing into a prepacked string.
+				Accepts values of functions, strings or RegExps, or arrays of these types.
+				  example:
+				    acceptParams: {size: /\d+/, include: ['true', 'false']}
+				    // the request
+				    <path>/?size=10&garbage=value&include=true
+				    // in the handler...
+				    req.preppedQuery; // ?size=10&include=true
 			}
 			...
 		]
@@ -62,7 +72,12 @@ var exportable = {
 			// (2c) Apply routing for each entry in pluralized
 			routeConfig.paths.forEach(function(path) {
 				routeConfig.verbs.forEach(function(verb) {
-					router[verb.toLowerCase()](path, routeConfig.handler);
+					router[verb.toLowerCase()](path, function(req) {
+						res.preppedQuery = routeConfig.acceptParams
+							? prepQueryString(routeConfig.acceptParams, req.query)
+							: '';
+						routeConfig.handler.apply(null, [].slice.call(arguments), 0);
+					});
 				});
 			});
 		});
@@ -83,5 +98,38 @@ var exportable = {
 
 	}
 };
+
+function accepts(value) {
+	return function(validator) {
+		switch (typeof validator) {
+			case 'function':
+				return validator(value);
+			// RegExp
+			case 'object':
+				return validator.text && validator.test(value);
+			case 'string':
+				return value === validator;
+		}
+	}
+}
+
+function prepQueryString(validatorSet, queryParams) {
+	return Object.keys(validatorSet).reduce(function(queryString, key) {
+
+		if (queryParams[key] && Array.isArray(validatorSet[key])
+			? validatorSet[key].some(accepts(queryParams[key]))
+			: accepts(queryParams[key])(validatorSet[key])) {
+
+				queryString += [
+					key,
+					queryParams[key]
+				].join('=');
+
+		}
+
+		return queryString;
+
+	}, '');
+}
 
 module.exports = exportable;
