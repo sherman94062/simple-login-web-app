@@ -20,6 +20,12 @@ module.exports = [
 			include: ['true', 'false']
 		},
 		handler: function(req, res) {
+			console.log('GET?MLT: /' + [
+				req.params.index,
+				req.params.mapping,
+				req.params.document,
+				'_mlt?min_term_freq=1&min_doc_freq=1&include=true&' + req.preppedQuery
+			].join('/'));
 			Database.get('/' + [
 				req.params.index,
 				req.params.mapping,
