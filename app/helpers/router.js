@@ -73,7 +73,7 @@ var exportable = {
 			routeConfig.paths.forEach(function(path) {
 				routeConfig.verbs.forEach(function(verb) {
 					router[verb.toLowerCase()](path, function(req) {
-						res.preppedQuery = routeConfig.acceptParams
+						req.preppedQuery = routeConfig.acceptParams
 							? prepQueryString(routeConfig.acceptParams, req.query)
 							: '';
 						routeConfig.handler.apply(null, [].slice.call(arguments), 0);
