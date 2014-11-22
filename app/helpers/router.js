@@ -52,7 +52,9 @@
 */
 
 
-var express = require('express');
+var express 		= require('express');
+var PrepQueryString = helper('prep.query');
+
 
 var exportable = {
 	generate: function (subspace) {
@@ -83,7 +85,7 @@ var exportable = {
 				routeConfig.verbs.forEach(function(verb) {
 					router[verb.toLowerCase()](path, function(req) {
 						req.preppedQuery = routeConfig.acceptParams
-							? prepQueryString(routeConfig.acceptParams, req.query)
+							? PrepQueryString(routeConfig.acceptParams, req.query)
 							: '';
 						routeConfig.handler.apply(null, [].slice.call(arguments), 0);
 					});
@@ -107,52 +109,6 @@ var exportable = {
 
 	}
 };
-
-// Curried to allow EXISTS X SUCH THAT X(elem) shorthand
-//   with Array.prototype.some
-function accepts(value) {
-	return function(validator) {
-		switch (typeof validator) {
-			case 'function':
-				return validator(value);
-			// Should be RegExp
-			case 'object':
-				return validator.test && validator.test(value);
-			case 'string':
-				return value === validator;
-		}
-	}
-}
-
-function prepQueryString(validatorSet, queryParams) {
-
-	// Iteration through all possibe keys in accepted set
-	return Object.keys(validatorSet).reduce(function(queryString, key) {
-
-		// Ensure key exists in request
-		if (queryParams[key] &&
-			// Since we accept both arrays and singles
-			Array.isArray(validatorSet[key])
-			// "Exists X in validatorSet[key] such that X(queryParams[key])"
-			? validatorSet[key].some(accepts(queryParams[key]))
-			// The singular passes
-			: accepts(queryParams[key])(validatorSet[key])) {
-
-				// Append `key=value` to reduction sequence
-				queryString += [
-					key,
-					queryParams[key]
-				].join('=') + '&';
-
-		} else {
-			// Do not allow pass through of invalid parameters
-			delete queryParams[key];
-		}
-		// Return extended parameter sequence
-		return queryString;
-
-	}, '').replace(/&$/, '');
-}
 
 // Public exposure
 module.exports = exportable;
