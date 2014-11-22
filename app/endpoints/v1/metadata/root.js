@@ -31,7 +31,7 @@ module.exports = [
 			if (!isWord(req.params.index)) {
 				badIndex();
 			} else {
-				Database.get('/' + req.params.index + '_mapping', badIndex, function(data) {
+				Database.get('/' + req.params.index + '/_mapping', badIndex, function(data) {
 					var json = {};
 					json[req.params.index] = Object.keys(data[Object.keys(data)[0]]);
 					res.json(json);
@@ -54,7 +54,7 @@ module.exports = [
 			if (!isWord(req.params.index) || !isWord(req.params.mapping)) {
 				badMapping();
 			} else {
-				Database.get('/' + req.params.index + '/' + req.params.mapping,
+				Database.get('/' + req.params.index + '/' + req.params.mapping + '/_mapping',
 					badMapping, function(data) {
 						var json = {};
 						json[req.params.index] = data[Object.keys(data)[0]]
