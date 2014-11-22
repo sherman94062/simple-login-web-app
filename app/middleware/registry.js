@@ -14,7 +14,8 @@
 // (1) Define middlewares
 var middleware = [
 	'bodyparser',
-	'qps'
+	'qps',
+	'default.headers'
 ];
 
 // (2) Attach all middleware
