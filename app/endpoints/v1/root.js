@@ -12,6 +12,7 @@ module.exports = {
 	context: __dirname,
 	children: [
 		'search',
-		'random'
+		'random',
+		'metadata'
 	]
 };

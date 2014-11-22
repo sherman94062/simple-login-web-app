@@ -58,7 +58,7 @@ function makeRequest(method, path, body, errHandler, handler) {
 		if (typeof handler !== 'function' && typeof handler.write === 'function') {
 			handler.writeHead(200, {
   				'Content-Length': res.headers['content-length'],
-  				'Content-Type': 'application/json'
+  				'Content-Type': res.headers['content-type']
   			});
 			res.on('data', function(packets) {
 				handler.write(packets);
