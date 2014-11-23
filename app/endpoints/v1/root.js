@@ -13,6 +13,7 @@ module.exports = {
 	children: [
 		'search',
 		'random',
-		'metadata'
+		'metadata',
+		'item'
 	]
 };
