@@ -20,7 +20,14 @@ module.exports = [
 					message: '500 Internal Server Error: ' +
 						'Could not access root metadata.'
 				});
-			}, res);
+			}, function(json) {
+				res.json(Object.keys(json).map(function(key) {
+					return {
+						index: key,
+						aliases: Object.keys(json[key].aliases)
+					};
+				}));
+			});
 		}
 	},
 	{
@@ -31,10 +38,8 @@ module.exports = [
 			if (!isWord(req.params.index)) {
 				badIndex();
 			} else {
-				Database.get('/' + req.params.index + '/_mapping', badIndex, function(data) {
-					var json = {};
-					json[req.params.index] = Object.keys(data[Object.keys(data)[0]]);
-					res.json(json);
+				Database.get('/' + req.params.index + '/_mapping', badIndex, function(json) {
+					res.json(Object.keys(json[Object.keys(json)[0]].mappings));
 				});
 			}
 			
@@ -55,11 +60,9 @@ module.exports = [
 				badMapping();
 			} else {
 				Database.get('/' + req.params.index + '/' + req.params.mapping + '/_mapping',
-					badMapping, function(data) {
-						var json = {};
-						json[req.params.index] = data[Object.keys(data)[0]]
-							.mappings[req.params.mapping].properties;
-						res.json(json);
+					badMapping, function(json) {
+						res.json(json[Object.keys(json)[0]]
+							.mappings[req.params.mapping].properties);
 					});
 			}
 
@@ -77,4 +80,3 @@ module.exports = [
 function isWord(string) {
 	return string.match(/^\w+$/);
 }
-
