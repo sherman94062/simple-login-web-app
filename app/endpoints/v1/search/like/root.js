@@ -38,7 +38,7 @@ module.exports = [
 				(json.hits.hits || []).forEach(function(hit) {
 					hit._source = SourceFilter(req.fieldSelection);
 				});
-				req.json(json);
+				res.json(json);
 			} : res);
 		}
 	}
