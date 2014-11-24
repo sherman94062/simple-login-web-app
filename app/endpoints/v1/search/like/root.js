@@ -10,6 +10,7 @@
 
 
 var Database = helper('db');
+var SourceFilter = helper('source.filter');
 
 module.exports = [
 	{
@@ -27,14 +28,18 @@ module.exports = [
 				req.params.mapping,
 				req.params.document,
 				'_mlt?min_term_freq=1&min_doc_freq=1&' + req.preppedQuery
-			].join('/'),
-			function(err) {
+			].join('/'), function(err) {
 				res.statusCode = 404;
 				res.json({
 					message: '404 Not Found: Document not found in ' +
 						'index and mapping, cannot calculate proximities.'
 				});
-			}, res);
+			}, req.fieldSelection ? function(json) {
+				(json.hits.hits || []).forEach(function(hit) {
+					hit._source = SourceFilter(req.fieldSelection);
+				});
+				req.json(json);
+			} : res);
 		}
 	}
 ];

@@ -54,7 +54,7 @@
 
 var express 		= require('express');
 var PrepQueryString = helper('prep.query');
-
+var selectPattern	= /^(\w+(\.\w+)*)(,(\w+(\.\w+)*))*$/;
 
 var exportable = {
 	generate: function (subspace) {
@@ -84,6 +84,12 @@ var exportable = {
 			routeConfig.paths.forEach(function(path) {
 				routeConfig.verbs.forEach(function(verb) {
 					router[verb.toLowerCase()](path, function(req) {
+						if (req.query.select) {
+							if (selectPattern.test(req.query.select)) {
+								req.fieldSelection = req.query.select.split(',');
+							}
+							delete req.query.select;
+						}
 						req.preppedQuery = routeConfig.acceptParams
 							? PrepQueryString(routeConfig.acceptParams, req.query)
 							: '';
