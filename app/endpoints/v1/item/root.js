@@ -6,6 +6,9 @@
 */
 
 
+var Database = helper('db');
+var SourceFilter = helper('source.filter');
+
 module.exports = [{
 	verb: 'GET',
 	path: '/:index/:mapping/:ids',
@@ -22,6 +25,6 @@ module.exports = [{
 				message: '404 Not Found: ' +
 					'Could not find documents.'
 			});
-		}, res)
+		}, SourceFilter(req, res));
 	}
 }];
