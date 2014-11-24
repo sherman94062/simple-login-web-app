@@ -12,6 +12,7 @@
 
 var Database  = helper('db');
 var mapFacets = require('./facet.mapper');
+var SourceFilter = helper('source.filter');
 
 
 
@@ -28,13 +29,13 @@ module.exports = {
 		var computedQuery = mapFacets(req.body);
 
 		if (!computedQuery) {
-			res.statusCode = 400;
+			res.statusCode = 500;
 			res.end();
 		} else {
 			Database.post(url, computedQuery, function(err) {
 				res.statusCode = ~err.indexOf('No handler') ? 404 : 500;
 				res.end();
-			}, res.json.bind(res));
+			}, SourceFilter(req, res));
 		}
 	}
 }
