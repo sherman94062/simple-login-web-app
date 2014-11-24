@@ -6,8 +6,8 @@
 */
 
 
-module.exports = function(useableFields) {
-	return multiFunc(usableFields, useableFields.map(getter));
+module.exports = function(okPaths) {
+	return multiFunc(okPaths, okPaths.map(getter));
 };
 
 
