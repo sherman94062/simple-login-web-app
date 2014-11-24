@@ -7,13 +7,14 @@
 
 
 module.exports = function(req, res) {
-	return req.fieldSelection ? function(json) {
+	// Just stream if is nothing found for pathing selections
+	return !req.fieldSelection ? res : function(json) {
 		var sourceFilter = multiFilter(req.fieldSelection);
 		(json.hits.hits || []).forEach(function(hit) {
 			hit._source = sourceFilter(hit._source);
 		});
 		res.json(json);
-	} : res;
+	};
 }
 
 

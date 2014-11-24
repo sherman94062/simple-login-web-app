@@ -7,6 +7,7 @@
 
 
 var Database = helper('db');
+var SourceFilter = helper('source.filter');
 
 var randomSeachQuery = {
 	query: {
@@ -40,7 +41,7 @@ module.exports = [{
 			res.json({
 				message: '404 Not Found: Search scope not found.'
 			});
-		}, res);
+		}, SourceFilter(req, res));
 
 	}
 }];

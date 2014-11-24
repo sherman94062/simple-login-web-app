@@ -34,7 +34,7 @@ module.exports = [
 					message: '404 Not Found: Document not found in ' +
 						'index and mapping, cannot calculate proximities.'
 				});
-			}, SourceFilter(res, req));
+			}, SourceFilter(req, res));
 		}
 	}
 ];
