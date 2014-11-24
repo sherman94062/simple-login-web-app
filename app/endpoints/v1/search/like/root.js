@@ -34,13 +34,7 @@ module.exports = [
 					message: '404 Not Found: Document not found in ' +
 						'index and mapping, cannot calculate proximities.'
 				});
-			}, req.fieldSelection ? function(json) {
-				var sourceFilter = SourceFilter(req.fieldSelection);
-				(json.hits.hits._source || []).forEach(function(hit) {
-					hit._source = sourceFilter(hit._source);
-				});
-				res.json(json);
-			} : res);
+			}, SourceFilter(res, req));
 		}
 	}
 ];
