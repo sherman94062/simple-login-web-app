@@ -35,8 +35,9 @@ module.exports = [
 						'index and mapping, cannot calculate proximities.'
 				});
 			}, req.fieldSelection ? function(json) {
-				(json.hits.hits || []).forEach(function(hit) {
-					hit._source = SourceFilter(req.fieldSelection);
+				var sourceFilter = SourceFilter(req.fieldSelection);
+				(json.hits.hits._source || []).forEach(function(hit) {
+					hit._source = sourceFilter(hit._source);
 				});
 				res.json(json);
 			} : res);
