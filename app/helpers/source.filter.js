@@ -10,6 +10,10 @@ module.exports = function(req, res) {
 	// Just stream if is nothing found for pathing selections
 	return !req.fieldSelection ? res : function(json) {
 		var sourceFilter = multiFilter(req.fieldSelection);
+		if (!json.hits) {
+			console.log(json);
+			throw "Could not find JSON hits...";
+		}
 		(json.hits.hits || []).forEach(function(hit) {
 			hit._source = sourceFilter(hit._source);
 		});
